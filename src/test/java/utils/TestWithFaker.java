@@ -34,7 +34,7 @@ public class TestWithFaker {
         $("[data-test-id='date']input").val(strData);
         $("[data-test-id='name']input").val("Рита Калашникова-Орлова");
         $("[data-test-id='phone']input").val("+79099998877");
-        $("[data-test-id= 'agreement']").click();
+        $("[data-test-id='agreement']").click();
         $("div.button").click();
         $("[data-test-id='success-notification'].notification__title")
                 .should(visible, Duration.ofSeconds(15));
@@ -51,7 +51,7 @@ public class TestWithFaker {
         $("[data-test-id='date']input").val(strData);
         $("[data-test-id='name']input").val(info.getName());
         $("[data-test-id='phone']input").val(info.getPhone());
-        $("[data-test-id= 'agreement']").click();
+        $("[data-test-id='agreement']").click();
         $("div.button").click();
         $("[data-test-id='success-notification'].notification__title")
                 .should(visible, Duration.ofSeconds(15));
