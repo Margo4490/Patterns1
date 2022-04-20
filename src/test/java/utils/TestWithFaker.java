@@ -25,51 +25,33 @@ public class TestWithFaker {
     DateTimeFormatter data = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     String strData = localDate.format(data);
 
-
-    @Test
-    void testWithData() {
-        Configuration.holdBrowserOpen = true;
-        Selenide.open("http://localhost:9999");
-        $("[data-test-id='city']input").val("Майкоп");
-        $("[data-test-id='date']input").val(strData);
-        $("[data-test-id='name']input").val("Рита Калашникова-Орлова");
-        $("[data-test-id='phone']input").val("+79099998877");
-        $("[data-test-id='agreement']").click();
-        $("div.button").click();
-        $("[data-test-id='success-notification'].notification__title")
-                .should(visible, Duration.ofSeconds(15));
-        $("[data-test-id='success-notification'].notification__content")
-                .should(Condition.text("Встреча успешно запланирована на " + strData), Duration.ofSeconds(15));
-    }
-
+    LocalDate localDate1 = LocalDate.now().plusDays(6);
+    DateTimeFormatter data1 = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    String strData1 = localDate1.format(data1);
 
     @Test
     void happyPathAfterChangeDate() {
+
         Configuration.holdBrowserOpen = true;
         Selenide.open("http://localhost:9999");
-        $("[data-test-id='city']input").val(info.getCity());
-        $("[data-test-id='date']input").val(strData);
-        $("[data-test-id='name']input").val(info.getName());
-        $("[data-test-id='phone']input").val(info.getPhone());
+        $("[data-test-id='city'] input").val(info.getCity());
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").val(strData);
+        $("[data-test-id='name'] input").val(info.getName());
+        $("[data-test-id='phone'] input").val(info.getPhone());
         $("[data-test-id='agreement']").click();
-        $("div.button").click();
-        $("[data-test-id='success-notification'].notification__title")
-                .should(visible, Duration.ofSeconds(15));
-        $("[data-test-id='success-notification'].notification__content")
+        $("div .button").click();
+        $("[data-test-id='success-notification'] .notification__title").should(visible, Duration.ofSeconds(15));
+        $("[data-test-id='success-notification'] .notification__content")
                 .should(Condition.text("Встреча успешно запланирована на " + strData), Duration.ofSeconds(15));
 
-        LocalDate localDate1 = LocalDate.now().plusDays(4);
-        DateTimeFormatter data1 = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        String strData1 = localDate1.format(data1);
-
-        $("[data-test-id='date']input").val(strData1);
-        $("div.button").click();
-        $("[data-test-id='replan-notification'].notification__title")
-                .should(visible, Duration.ofSeconds(15));
-        $("[data-test-id='replan-notification'].notification__content")
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").val(strData1);
+        $("div .button").click();
+        $("[data-test-id='replan-notification'] .notification__content")
                 .should(Condition.text("У вас уже запланирована встреча на другую дату. Перепланировать?"), Duration.ofSeconds(15));
-        $("[data-test-id='replan-notification'].button").click();
-        $("[data-test-id='success-notification'].notification__content")
+        $("[data-test-id='replan-notification'] .button").click();
+        $("[data-test-id='success-notification'] .notification__content")
                 .should(Condition.text("Встреча успешно запланирована на " + strData1), Duration.ofSeconds(15));
 
     }
